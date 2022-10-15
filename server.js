@@ -1,26 +1,30 @@
+require('dotenv').config()
 const express = require('express')
-const bodyParser = require('body-parser')
-const mongoose = require('mongoose')
 const methodOverride = require('method-override')
 const Log = require('./models/log')
+const db = require('./models/db')
 
 //reads the env file
-require('dotenv').config();
+
 
 const app = express()
 
 app.use(express.urlencoded({extended: true}))
-// app.use(bodyParser.urlencoded({extended:true}))
+app.use((req, res, next) => {
+    res.locals.data = {}
+    next()
+  })
+
 app.engine('jsx', require('jsx-view-engine').createEngine())
 app.set('view engine', 'jsx') // register the jsx view engine
-
-mongoose.connect(process.env.MONGO_URI, {useNewURLParser: true, useUnifiedTopology: true})
-mongoose.connection.once('open',  ()=>{
+db.once('open',  ()=>{
   console.log("connected to mongo db atlas")
 })
 
 app.use(methodOverride('_method'))
+app.use('/logs', require('./controllers/routeController'))
 
+/*
 app.get('/logs', (req, res) => {
     Log.find({}, (err, foundLogs) => {
         if(err){
@@ -56,7 +60,7 @@ app.delete('/logs/:id', (req, res)=>{
 app.put("/logs/:id", (req, res)=>{
     //req.body contains all the form data from the user
   req.body.shipIsBroken === 'on' || req.body.shipIsBroken === true  ? req.body.shipIsBroken = true : req.body.shipIsBroken = false
-  //return the original fruit, and we want to see th enew fruit
+  //return the original log, and we want to see th enew log
   Log.findByIdAndUpdate(req.params.id, req.body, {new: true}, (err, updatedLog)=>{
     if(err){
       console.error(err)
@@ -110,6 +114,8 @@ app.get('/logs/:i', (req, res) => {
 
     })
 })
+
+*/
 
 app.listen(3002, ()=>{
     console.log("listening on port 3002")

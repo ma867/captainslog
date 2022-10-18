@@ -1,7 +1,6 @@
 require('dotenv').config()
 const express = require('express')
 const methodOverride = require('method-override')
-const Log = require('./models/log')
 const db = require('./models/db')
 
 //reads the env file
@@ -22,7 +21,9 @@ db.once('open',  ()=>{
 })
 
 app.use(methodOverride('_method'))
-app.use('/logs', require('./controllers/routeController'))
+app.use(express.static('public'))
+app.use('/logs', require('./controllers/routeLogController'))
+app.use('/foods', require('./controllers/routeFoodController'))
 
 /*
 app.get('/logs', (req, res) => {

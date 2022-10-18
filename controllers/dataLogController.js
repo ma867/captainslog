@@ -1,7 +1,7 @@
 const { update } = require('../models/log')
 const Log = require('../models/log')
 
-const dataController = {
+const dataLogController = {
     //Index, does it need the database
     index(req, res, next){
         Log.find({}, (err, foundLogs) => {
@@ -73,4 +73,4 @@ const dataController = {
     }
 }
 
-module.exports = dataController
+module.exports = dataLogController

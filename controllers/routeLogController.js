@@ -3,8 +3,8 @@
 const express = require('express')
 // only the router none of the other app stuff
 const router = express.Router()
-const dataController = require('./dataController')
-const viewController = require('./viewController')
+const dataController = require('./dataLogController')
+const viewController = require('./viewLogController')
 
 
 // Routes

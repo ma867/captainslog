@@ -1,38 +1,45 @@
 const React = require('react');
+const LogDefault = require('../layouts/Default')
 
 class Index extends React.Component{
     render(){
         const {logs} = this.props
         return(
-            <div>
-                <h1>Logs Index Page</h1>
-                <nav>
-                    <a href="/logs/new">Create a new log</a>
-                </nav>
-                <ul>
-                    {
-                        logs.map((log) => {
+            <LogDefault title="Captain's Log Index" navLinks="logs">
+                {
+                    logs.map((log) => {
 
-                            const {title, entry, shipIsBroken, time} = log
-                            return (
-                                <>
-                                <li key={log._id}>
-                                    <b><a href={`/logs/${log._id}`}>{title}</a>:</b>
-                                    <ul>
-                                        <li>{shipIsBroken?'Ship is broken':'Ship is not broken'}</li>
-                                        <li>" {entry} "</li>
-                                        <li>" {time.toString()} "</li>
-                                    </ul>                               
-                                </li><br />
-                                <form action={`/logs/${log._id}?_method=DELETE`} method="POST">
-                                        <input type="submit" value={`Delete "${title}" Log`} />
-                                </form><br />
-                                </>
-                            )
-                        })
-                    }
-                </ul>
-            </div>
+                        const {title, entry, shipIsBroken, time, _id} = log
+                        return (
+                          
+
+                            <div className="col" key={log._id}>
+                                <div className="service-card">
+                                    <div className="icon-wrapper">
+                                        <i className="fa-regular fa-circle-check"></i>
+                                    </div>
+                                    <h3><a href={`/logs/${log._id}`}>{title}</a></h3>
+                                    <p>
+                                        {shipIsBroken?'Ship is broken':'Ship is not broken'}
+                                    </p>
+                                    <p>
+                                        "{entry}"
+                                    </p>
+                                    <p>
+                                    {time.toString()} 
+                                    </p>
+                                    <form action={`/logs/${log._id}?_method=DELETE`} method="POST">
+                                        <input className="delete "type="submit" value="Remove"/>
+                                    </form>
+                                </div>
+                            </div>
+                            
+                        
+                        )
+                    })
+                }
+                
+            </LogDefault>
         )
     }
 }
